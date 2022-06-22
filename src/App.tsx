@@ -1,6 +1,4 @@
-import { gql } from "@apollo/client"
-import { useEffect } from "react"
-import { client } from "./lib/apollo"
+import { gql, useQuery } from "@apollo/client"
 
 const GET_LESSONS_QUERY = gql`
   query {
@@ -10,17 +8,21 @@ const GET_LESSONS_QUERY = gql`
     }
   }`
 
-function App() {
-  useEffect( () => {
-    client.query({
-      query: GET_LESSONS_QUERY,    
-    }).then(response => {
-      console.log(response.data)
-    })
-  }, [])
+  interface Lesson {
+    id: string;
+    title: string;
+  }
 
+function App() {
+  const { data } = useQuery<{lessons: Lesson[]}>(GET_LESSONS_QUERY)
+  //tem que usar ? pois o data pode vir vazio
+  //no react os elementos precisam de uma key
   return (
-    <h1 className="text-5xl font-bold text-violet-500">Hello World</h1>
+   <ul>
+    {data?.lessons.map((lesson: Lesson) => {
+      return <li key={lesson.id}>{lesson.title}</li>
+    })}
+   </ul>
   )
 }
 
