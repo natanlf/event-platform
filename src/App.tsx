@@ -1,4 +1,5 @@
 import { gql, useQuery } from "@apollo/client"
+import { Event } from "./pages/Event";
 
 const GET_LESSONS_QUERY = gql`
   query {
@@ -14,15 +15,9 @@ const GET_LESSONS_QUERY = gql`
   }
 
 function App() {
-  const { data } = useQuery<{lessons: Lesson[]}>(GET_LESSONS_QUERY)
-  //tem que usar ? pois o data pode vir vazio
-  //no react os elementos precisam de uma key
+  
   return (
-   <ul>
-    {data?.lessons.map((lesson: Lesson) => {
-      return <li key={lesson.id}>{lesson.title}</li>
-    })}
-   </ul>
+   <Event/>
   )
 }
 
